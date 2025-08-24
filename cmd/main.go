@@ -1,11 +1,16 @@
 package main
 
-import "fmt"
+import (
+	todo "awesomeProject"
+	"awesomeProject/pkg/handler"
+	"log"
+)
 
 func main() {
-	sum := 1
-	for sum < 1000 {
-		sum += sum
+	handlers := new(handler.Handler)
+	srv := new(todo.Server)
+
+	if err := srv.Run("8080", handlers.InitRoutes()); err != nil {
+		log.Fatalf("server run error: %v", err.Error())
 	}
-	fmt.Println(sum)
 }
