@@ -4,6 +4,7 @@ import (
 	todo "awesomeProject"
 	"awesomeProject/pkg/handler"
 	"awesomeProject/pkg/repository"
+	"awesomeProject/pkg/service"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
@@ -12,6 +13,10 @@ import (
 )
 
 func main() {
+	repos := repository.NewRepository()
+	services := service.NewService(repos)
+	handlers := new(handler.Handler)
+
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initializing config: %v", err.Error())
 	}
@@ -33,7 +38,7 @@ func main() {
 		log.Fatalf("error initializing DB: %v", err.Error())
 	}
 
-	handlers := new(handler.Handler)
+
 	srv := new(todo.Server)
 
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
