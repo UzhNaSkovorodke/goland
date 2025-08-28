@@ -13,10 +13,6 @@ import (
 )
 
 func main() {
-	repos := repository.NewRepository()
-	services := service.NewService(repos)
-	handlers := new(handler.Handler)
-
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initializing config: %v", err.Error())
 	}
@@ -25,7 +21,7 @@ func main() {
 		log.Fatalf("error loading .env file: %v", err.Error())
 	}
 
-	_, err := repository.NewPostgresDB(repository.Config{
+	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
@@ -38,6 +34,9 @@ func main() {
 		log.Fatalf("error initializing DB: %v", err.Error())
 	}
 
+	repos := repository.NewRepository(db)
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
 	srv := new(todo.Server)
 

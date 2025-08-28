@@ -1,6 +1,6 @@
 package repository
-import "github.com/jmo
-iron/sqlx"
+
+import "github.com/jmoiron/sqlx"
 
 type Authorization interface {
 }
