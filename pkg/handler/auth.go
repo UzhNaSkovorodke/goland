@@ -2,14 +2,10 @@ package handler
 
 import (
 	todo "awesomeProject"
-	"github.com/gin-gonic/gin"
 	"net/http"
-)
 
-type signInInput struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
-}
+	"github.com/gin-gonic/gin"
+)
 
 func (h *Handler) signUp(c *gin.Context) {
 	var input todo.User
@@ -29,6 +25,11 @@ func (h *Handler) signUp(c *gin.Context) {
 		"id": id,
 	})
 
+}
+
+type signInInput struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 func (h *Handler) signIn(c *gin.Context) {
